@@ -1,7 +1,47 @@
 import { Request, Response } from 'express'
+import bcrypt from 'bcrypt'
 import User from '../models/User'
 
 class UserController {
+  public async authenticate (req: Request, res: Response): Promise<Response> {
+    const { username, password } = req.body
+    const user = await User.findOne({ username }).select('+password')
+
+    if (!user) {
+      return res
+        .status(401)
+        .json({
+          name: 'Unauthorized',
+          message: 'Invalid username'
+        })
+    }
+
+    await bcrypt.compare(password, user.password, async (err, valid) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({
+            name: 'Exception',
+            message: err
+          })
+      }
+
+      if (valid) {
+        return res.json({
+          name: user.fullname(),
+          token: await user.generateToken()
+        })
+      }
+
+      return res
+        .status(401)
+        .json({
+          name: 'Unauthorized',
+          message: 'Invalid password'
+        })
+    })
+  }
+
   public async delete (req: Request, res: Response): Promise<Response> {
     const { id } = req.params
     const deleted = await User.deleteOne({ id })

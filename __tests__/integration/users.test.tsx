@@ -87,4 +87,56 @@ describe('Users', () => {
     expect(response.body).toHaveProperty('deleted')
     expect(response.body.deleted.ok).toBe(1)
   })
+
+  it('should NOT authenticate with invalid credentials', async () => {
+    await User.create(userData)
+    const credentials = {
+      username: userData.username,
+      password: userData.password
+    }
+
+    await request(app)
+      .post('/api/authenticate')
+      .send({ ...credentials, username: 'invalid' })
+      .then(response => {
+        expect(response.status).toBe(401)
+        expect(response.body).toHaveProperty('name')
+        expect(response.body).toHaveProperty('message')
+      })
+
+    await request(app)
+      .post('/api/authenticate')
+      .send({ ...credentials, password: 'invalid' })
+      .then(response => {
+        expect(response.status).toBe(401)
+        expect(response.body).toHaveProperty('name')
+        expect(response.body).toHaveProperty('message')
+      })
+
+    await request(app)
+      .post('/api/authenticate')
+      .send({ username: 'invalid', password: 'invalid' })
+      .then(response => {
+        expect(response.status).toBe(401)
+        expect(response.body).toHaveProperty('name')
+        expect(response.body).toHaveProperty('message')
+      })
+  })
+
+  it('should authenticate with valid credentials', async () => {
+    await User.create(userData)
+    const credentials = {
+      username: userData.username,
+      password: userData.password
+    }
+
+    await request(app)
+      .post('/api/authenticate')
+      .send(credentials)
+      .then(response => {
+        expect(response.status).toBe(200)
+        expect(response.body).toHaveProperty('name')
+        expect(response.body).toHaveProperty('token')
+      })
+  })
 })

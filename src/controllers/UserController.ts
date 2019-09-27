@@ -4,12 +4,7 @@ import User from '../models/User'
 class UserController {
   public async delete (req: Request, res: Response): Promise<Response> {
     const { id: _id } = req.params
-    const deleted = await User
-      .deleteOne({ _id })
-      .catch(err => res.status(500).json({
-        name: err.name,
-        message: err.errmsg ? err.errmsg : 'User[delete]: Um erro ocorreu em sua solicitação.'
-      }))
+    const deleted = await User.deleteOne({ _id })
 
     return res.json({ deleted })
   }

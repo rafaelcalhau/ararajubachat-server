@@ -19,7 +19,7 @@ describe('Users', () => {
     expect(response.body.username).toBe(userData.username)
   })
 
-  it('should not access a private route without an authorization token', async () => {
+  it('should NOT list users without an authorization token', async () => {
     await User.create(userData)
 
     const response = await request(app)
@@ -37,14 +37,15 @@ describe('Users', () => {
       .set('authorization', `Bearer ${token}`)
       .expect(200)
 
-    // expect(response.status).toBe(200)
     expect(response.body.length).toBe(1)
   })
 
   it('should NOT update an user without an authorization token', async () => {
     const user = await User.create(userData)
 
-    request(app)
+    expect(user._id).toBeTruthy()
+
+    await request(app)
       .put(`/api/users/${user._id}`)
       .send({ lastname: 'Calhau P. dos Santos' })
       .expect(401)
@@ -62,5 +63,28 @@ describe('Users', () => {
     expect(response.status).toBe(200)
     expect(response.body).toHaveProperty('ok')
     expect(response.body.ok).toBe(1)
+  })
+
+  it('should NOT delete an user without an authorization token', async () => {
+    const user = await User.create(userData)
+
+    expect(user._id).toBeTruthy()
+
+    await request(app)
+      .delete(`/api/users/${user._id}`)
+      .expect(401)
+  })
+
+  it('should delete an user using an authorization token', async () => {
+    const user = await User.create(userData)
+    const token = await user.generateToken()
+
+    const response = await request(app)
+      .delete(`/api/users/${user._id}`)
+      .set('authorization', `Bearer ${token}`)
+      .expect(200)
+
+    expect(response.body).toHaveProperty('deleted')
+    expect(response.body.deleted.ok).toBe(1)
   })
 })

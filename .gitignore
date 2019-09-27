@@ -1,0 +1,6 @@
+.env
+.env.test
+
+__tests__/coverage/
+dist/
+node_modules/

@@ -1,0 +1,52 @@
+{
+  "name": "ararajubachat-server",
+  "description": "Backend Application for ArarajubaChat developed on Node.js and Socket.io",
+  "version": "1.0.0",
+  "main": "src/app.ts",
+  "scripts": {
+    "build": "sucrase ./src -d ./dist --transforms typescript,imports",
+    "dev": "nodemon src/server.ts --ignore __tests__",
+    "test": "NODE_ENV=test jest --detectOpenHandles"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/cors": "^2.8.6",
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^4.17.1",
+    "@types/express-rate-limit": "^3.3.2",
+    "@types/jest": "^24.0.18",
+    "@types/jsonwebtoken": "^8.3.4",
+    "@types/mongoose": "^5.5.17",
+    "@types/supertest": "^2.0.8",
+    "@typescript-eslint/eslint-plugin": "^2.3.0",
+    "@typescript-eslint/parser": "^2.3.0",
+    "eslint": "^6.4.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.2",
+    "sucrase": "^3.10.1",
+    "supertest": "^4.0.2",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "cors": "^2.8.5",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "express-rate-limit": "^5.0.0",
+    "helmet": "^3.21.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.7.1"
+  },
+  "jest": {
+    "coverageDirectory": "./__tests__/coverage/",
+    "collectCoverage": true
+  }
+}

@@ -3,8 +3,8 @@ import User from '../models/User'
 
 class UserController {
   public async delete (req: Request, res: Response): Promise<Response> {
-    const { id: _id } = req.params
-    const deleted = await User.deleteOne({ _id })
+    const { id } = req.params
+    const deleted = await User.deleteOne({ id })
 
     return res.json({ deleted })
   }
@@ -27,9 +27,9 @@ class UserController {
   }
 
   public async update (req: Request, res: Response): Promise<Response> {
-    const { id: _id } = req.params
+    const { id } = req.params
     const user = await User
-      .updateOne({ _id }, { ...req.body })
+      .updateOne({ id }, { ...req.body })
       .catch(err => res.status(500).json({
         name: err.name,
         message: err.errmsg ? err.errmsg : 'User[update]: Um erro ocorreu em sua solicitação.'

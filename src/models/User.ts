@@ -2,7 +2,7 @@ import { Schema, model, Document } from 'mongoose'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-interface UserInterface extends Document {
+export declare interface UserInterface extends Document {
   firstname: string;
   fullname?: Function;
   lastname?: string;
@@ -12,6 +12,7 @@ interface UserInterface extends Document {
 }
 
 const UserSchema: Schema<UserInterface> = new Schema({
+  avatar: String,
   firstname: {
     type: String,
     allowNull: false

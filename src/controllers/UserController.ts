@@ -16,7 +16,7 @@ class UserController {
         })
     }
 
-    await bcrypt.compare(password, user.password, async (err, valid) => {
+    bcrypt.compare(password, user.password, async (err, valid) => {
       if (err) {
         return res
           .status(500)

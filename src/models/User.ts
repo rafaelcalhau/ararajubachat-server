@@ -27,7 +27,8 @@ const UserSchema: Schema<UserInterface> = new Schema({
   },
   password: {
     type: String,
-    allowNull: false
+    allowNull: false,
+    select: false
   }
 }, {
   timestamps: true

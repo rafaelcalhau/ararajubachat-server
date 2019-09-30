@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 export declare interface UserInterface extends Document {
+  avatar?: string;
   firstname: string;
   fullname?: Function;
   lastname?: string;

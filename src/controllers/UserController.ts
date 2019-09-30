@@ -55,15 +55,20 @@ class UserController {
     return res.json(users)
   }
 
-  public async store (req: Request, res: Response): Promise<Response> {
-    const user = await User
+  public async store (req: Request, res: Response): Promise<Response|void> {
+    return User
       .create(req.body)
+      .then(user => {
+        if (user.password) {
+          user.password = undefined
+        }
+
+        return res.json(user)
+      })
       .catch(err => res.status(500).json({
         name: err.name,
         message: err.errmsg ? err.errmsg : 'User[store]: Um erro ocorreu em sua solicitação.'
       }))
-
-    return res.json(user)
   }
 
   public async update (req: Request, res: Response): Promise<Response> {

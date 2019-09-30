@@ -139,4 +139,20 @@ describe('Users', () => {
         expect(response.body).toHaveProperty('token')
       })
   })
+
+  it('should be possible verify an username availability', async () => {
+    await User.create(userData)
+    await request(app)
+      .get(`/api/users/username/${userData.username}`)
+      .then(response => {
+        expect(response.body).toHaveProperty('valid')
+        expect(response.body.valid).toBeFalsy()
+      })
+    await request(app)
+      .get('/api/users/username/unsedUsername')
+      .then(response => {
+        expect(response.body).toHaveProperty('valid')
+        expect(response.body.valid).toBeTruthy()
+      })
+  })
 })

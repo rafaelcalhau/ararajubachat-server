@@ -58,12 +58,12 @@ class UserController {
   public async store (req: Request, res: Response): Promise<Response|void> {
     return User
       .create(req.body)
-      .then(user => {
-        if (user.password) {
-          user.password = undefined
-        }
-
-        return res.json(user)
+      .then(async user => {
+        return res.json({
+          firstname: user.firstname,
+          username: user.username,
+          token: await user.generateToken()
+        })
       })
       .catch(err => res.status(500).json({
         name: err.name,

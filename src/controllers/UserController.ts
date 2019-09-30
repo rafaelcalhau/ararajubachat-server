@@ -77,6 +77,17 @@ class UserController {
 
     return res.json(user)
   }
+
+  public async verifyUsername (req: Request, res: Response): Promise<Response> {
+    const { username } = req.params
+    const user = await User.findOne({ username })
+
+    if (!user) {
+      return res.json({ valid: true }) // it's available to use
+    }
+
+    return res.json({ valid: false }) // it's unavailable
+  }
 }
 
 export default new UserController()

@@ -7,5 +7,6 @@ export default (routes: Router): void => {
 
   routes
     .post('/authenticate', UserController.authenticate)
+    .post('/authenticate-token', UserController.authenticateToken)
     .post('/users', UserController.store)
 }

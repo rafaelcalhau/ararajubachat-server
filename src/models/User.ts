@@ -1,7 +1,6 @@
 import { Schema, model, Document } from 'mongoose'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-
 export declare interface UserInterface extends Document {
   avatar?: string;
   firstname: string;

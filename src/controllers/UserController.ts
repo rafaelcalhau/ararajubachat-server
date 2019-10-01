@@ -1,5 +1,7 @@
 import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+
 import User from '../models/User'
 
 class UserController {
@@ -40,6 +42,47 @@ class UserController {
           message: 'Invalid password'
         })
     })
+  }
+
+  public async authenticateToken (req: Request, res: Response): Promise<Response> {
+    const { username, token } = req.body
+    const user = await User.findOne({ username }).select('id')
+
+    if (!user) {
+      return res
+        .status(401)
+        .json({
+          name: 'Unauthorized',
+          message: 'Invalid username'
+        })
+    }
+
+    try {
+      const decoded: any = jwt.verify(token, process.env.JWT_SECRET)
+
+      if (typeof decoded === 'object' && user.id === decoded.id) {
+        return res
+          .status(200)
+          .json({
+            name: 'Authorized',
+            message: 'The token was confirmed'
+          })
+      } else {
+        return res
+          .status(401)
+          .json({
+            name: 'Unauthorized',
+            message: 'Invalid token'
+          })
+      }
+    } catch (err) {
+      return res
+        .status(401)
+        .json({
+          name: 'Unauthorized',
+          message: 'Invalid token'
+        })
+    }
   }
 
   public async delete (req: Request, res: Response): Promise<Response> {

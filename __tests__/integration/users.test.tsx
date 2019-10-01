@@ -140,6 +140,24 @@ describe('Users', () => {
       })
   })
 
+  it('should authenticate user using a valid username and authorization token', async () => {
+    const user = await User.create(userData)
+    const data = {
+      username: userData.username,
+      token: await user.generateToken()
+    }
+
+    await request(app)
+      .post('/api/authenticate-token')
+      .send(data)
+      .then(response => {
+        expect(response.status).toBe(200)
+        expect(response.body).toHaveProperty('name')
+        expect(response.body).toHaveProperty('message')
+        expect(response.body.name).toBe('Authorized')
+      })
+  })
+
   it('should be possible verify an username availability', async () => {
     await User.create(userData)
     await request(app)

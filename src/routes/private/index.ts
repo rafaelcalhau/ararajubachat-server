@@ -15,6 +15,7 @@ export default (routes: Router): void => {
 
   // Groups
   routes
+    .get('/groups', GroupController.all)
     .delete('/users/:id/groups/:groupId', GroupController.delete)
     .get('/users/:id/groups', GroupController.index)
     .post('/users/:id/groups', GroupController.store)

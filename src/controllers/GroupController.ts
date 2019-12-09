@@ -2,6 +2,11 @@ import { Request, Response } from 'express'
 import Group from '../models/Group'
 
 export default {
+  async all (req: Request, res: Response): Promise<Response> {
+    const groups = await Group.find({ isPrivate: false })
+
+    return res.json(groups)
+  },
   async delete (req: Request, res: Response): Promise<Response> {
     const { id: userId, groupId } = req.params
     const deleted = await Group.deleteOne({ id: groupId, ownerId: userId })

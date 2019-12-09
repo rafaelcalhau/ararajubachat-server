@@ -4,21 +4,28 @@ import { UserInterface } from './User'
 interface GroupInterface extends Document {
   name: string;
   description?: string;
-  createdBy: UserInterface;
+  isPrivate: boolean;
   members: Schema.Types.ObjectId[];
+  ownerId: UserInterface['_id'];
+  password?: string;
 }
 
-const GroupSchema: Schema<GroupInterface> = new Schema({
+const GroupSchema: Schema = new Schema({
   name: String,
   description: {
     type: String,
     allowNull: true
   },
-  createdBy: Schema.Types.ObjectId,
+  isPrivate: Boolean,
   members: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
-  }]
+  }],
+  ownerId: Schema.Types.ObjectId,
+  password: {
+    type: String,
+    allowNull: true
+  }
 }, {
   timestamps: true
 })

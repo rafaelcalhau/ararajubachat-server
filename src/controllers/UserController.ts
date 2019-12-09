@@ -4,8 +4,8 @@ import jwt from 'jsonwebtoken'
 
 import User from '../models/User'
 
-class UserController {
-  public async authenticate (req: Request, res: Response): Promise<Response> {
+export default {
+  async authenticate (req: Request, res: Response): Promise<Response> {
     const { username, password } = req.body
     const user = await User.findOne({ username }).select('+password')
 
@@ -42,9 +42,8 @@ class UserController {
           message: 'Invalid password'
         })
     })
-  }
-
-  public async authenticateToken (req: Request, res: Response): Promise<Response> {
+  },
+  async authenticateToken (req: Request, res: Response): Promise<Response> {
     const { username, token } = req.body
     const user = await User.findOne({ username }).select('id')
 
@@ -83,22 +82,19 @@ class UserController {
           message: 'Invalid token'
         })
     }
-  }
-
-  public async delete (req: Request, res: Response): Promise<Response> {
+  },
+  async delete (req: Request, res: Response): Promise<Response> {
     const { id } = req.params
     const deleted = await User.deleteOne({ id })
 
     return res.json({ deleted })
-  }
-
-  public async index (req: Request, res: Response): Promise<Response> {
+  },
+  async index (req: Request, res: Response): Promise<Response> {
     const users = await User.find()
 
     return res.json(users)
-  }
-
-  public async store (req: Request, res: Response): Promise<Response|void> {
+  },
+  async store (req: Request, res: Response): Promise<Response|void> {
     return User
       .create(req.body)
       .then(async user => {
@@ -112,9 +108,8 @@ class UserController {
         name: err.name,
         message: err.errmsg ? err.errmsg : 'User[store]: Um erro ocorreu em sua solicitação.'
       }))
-  }
-
-  public async update (req: Request, res: Response): Promise<Response> {
+  },
+  async update (req: Request, res: Response): Promise<Response> {
     const { id } = req.params
     const user = await User
       .updateOne({ id }, { ...req.body })
@@ -124,9 +119,8 @@ class UserController {
       }))
 
     return res.json(user)
-  }
-
-  public async verifyUsername (req: Request, res: Response): Promise<Response> {
+  },
+  async verifyUsername (req: Request, res: Response): Promise<Response> {
     const { username } = req.params
     const user = await User.findOne({ username })
 
@@ -137,5 +131,3 @@ class UserController {
     return res.json({ valid: false }) // it's unavailable
   }
 }
-
-export default new UserController()

@@ -11,7 +11,7 @@ export declare interface UserInterface extends Document {
   generateToken: Function;
 }
 
-const UserSchema: Schema<UserInterface> = new Schema({
+const UserSchema: Schema = new Schema({
   avatar: String,
   firstname: {
     type: String,
@@ -39,7 +39,7 @@ UserSchema.methods.fullname = function (): string {
   return `${this.firstname} ${this.lastname}`
 }
 
-UserSchema.methods.generateToken = function (): string {
+UserSchema.methods.generateToken = async function (): Promise<string> {
   return jwt.sign({ id: this.id }, process.env.JWT_SECRET)
 }
 
@@ -48,7 +48,7 @@ UserSchema.pre<UserInterface>('save', async function (next): Promise<void> {
     this.password = await bcrypt.hash(this.password, 8)
   }
 
-  return next()
+  next()
 })
 
 export default model<UserInterface>('User', UserSchema)

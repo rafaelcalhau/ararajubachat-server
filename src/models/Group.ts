@@ -5,7 +5,7 @@ interface GroupInterface extends Document {
   name: string;
   description?: string;
   isPrivate: boolean;
-  members: Schema.Types.ObjectId[];
+  members: UserInterface['_id'][];
   ownerId: UserInterface['_id'];
   password?: string;
 }

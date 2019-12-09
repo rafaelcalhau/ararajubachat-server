@@ -30,6 +30,7 @@ export default {
 
       if (valid) {
         return res.json({
+          id: user._id,
           name: user.fullname(),
           token: await user.generateToken()
         })
@@ -99,6 +100,7 @@ export default {
       .create(req.body)
       .then(async user => {
         return res.json({
+          id: user._id,
           firstname: user.firstname,
           username: user.username,
           token: await user.generateToken()
